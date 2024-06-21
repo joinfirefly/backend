@@ -1,7 +1,7 @@
 [project]
 name = "Graphene-BE"
 version = "0.1.0"
-description = "Default template for PDM package"
+description = "Graphene's Backend Server"
 authors = [
     {name = "Graphene-Fed", email = "amase.cocoa@gmail.com"},
 ]
@@ -13,7 +13,10 @@ dependencies = [
     "granian>=1.4.1",
     "uvicorn[standard]>=0.30.0",
     "pyfiglet>=1.0.2",
-    "cleo>=2.1.0",
+    "redis[hiredis]>=5.0.4",
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "prisma @ git+https://github.com/RobertCraigie/prisma-client-py.git",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
@@ -26,11 +29,9 @@ distribution = false
 [tool.pdm.scripts]
 serve = "granian --interface asgi main:app"
 "uvicorn:serve" = "uvicorn main:app"
-dev = "uvicorn main:app --reload"
+dev = "fastapi dev main.py"
 generate_schema = "python ./genschema.py"
 # grapctl
-
-[project.scripts]
 
 [project.urls]
 "Homepage" = "https://github.com/graphene-fed/Graphene-BE"
