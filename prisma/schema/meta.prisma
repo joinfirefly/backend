@@ -1,0 +1,11 @@
+model Instance {
+  id        String  @id @default(cuid())
+  isHere    Boolean
+  host      String  @unique
+  iconUrl   String
+  followingCount    Int @default(0) // isHereがTrueなら使わない。
+  folllowersCount   Int @default(0) // isHereがTrueなら使わない。
+  description   String?
+
+  user  User[]
+}

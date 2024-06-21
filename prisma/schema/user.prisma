@@ -1,0 +1,30 @@
+model Follow {
+  followerId String
+  followeeId String
+  follower   User     @relation("Follower", fields: [followerId], references: [username], onDelete: Cascade)
+  followee   User     @relation("Followee", fields: [followeeId], references: [username], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@id([followerId, followeeId])
+}
+
+model User {
+  id        String  @id @default(cuid())
+  email     String  @unique
+  name      String?
+  username  String? @unique
+  avatarUrl String?
+  bannerUrl String?
+
+  followers Follow[] @relation("Follower")
+  followees Follow[] @relation("Followee")
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at") @updatedAt
+
+  posts Note[]
+  reactions Reactions[]
+
+  host     String
+  instance Instance @relation(fields: [host], references: [host])
+}
