@@ -4,15 +4,17 @@ import sys
 import urllib.parse
 from contextlib import asynccontextmanager
 from importlib import import_module
+from http.client import responses
 
 import pyfiglet
+import fastapi
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
-from fastapi.requests import Request
 from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
 import config
+from src.lib.http_colors import status_color, textStyle
 
 coloredLog = {
     logging.DEBUG: "\033[94m",
@@ -60,24 +62,56 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, docs_url=None)
 logLevel = logging.INFO
 if config.debug:
     logLevel = logging.DEBUG
 logger = get(logLevel)
 if config.use_builtin_logger:
-
     @app.middleware("http")
-    async def request_log(request: Request, call_next):
+    async def request_log(request: fastapi.Request, call_next):
         params = dict(request.query_params)
+        scope = request.scope
+        if scope.get("type") == "http":
+            if scope.get("http_version"):
+                protocol_version = scope.get("http_version")
+            else:
+                protocol_version = "UNKNOWN"
+            protocol = f"HTTP/{protocol_version}"
+        elif scope.get("type") == "websocket":
+            protocol = "WebSocket"
         if params == {}:
             params = ""
         else:
             params = "?" + urllib.parse.urlencode(params)
         response: Response = await call_next(request)
-        logger.info(
-            f'"{request.method.upper()} {request.url.path}{params}" {response.status_code}'
-        )
+        res_text = responses.get(response.status_code)
+        if res_text is None:
+            res_text = "UNKNOWN"
+        status_code = response.status_code
+        stc_int = int(status_code)
+        print(type(stc_int))
+        if 100 <= stc_int <= 199:
+            response_color = status_color["1xx"]
+        elif 200 <= stc_int <= 299:
+            response_color = status_color["2xx"]
+        elif 300 <= stc_int <= 399:
+            response_color = status_color["3xx"]
+        elif 400 <= stc_int <= 499:
+            response_color = status_color["4xx"]
+        elif 500 <= stc_int <= 599:
+            response_color = status_color["5xx"]
+        else:
+            response_color = status_color["unknown"]
+        
+        if protocol == "WebSocket":
+            logger.info(
+                f'{textStyle.reset} {request.client.host}:{request.client.port} - {textStyle.bold}"WebSocket {request.url.path}{params}" {response_color}{response.status_code} {res_text}{textStyle.reset}'
+            )
+        else:
+            logger.info(
+                f'{textStyle.reset} {request.client.host}:{request.client.port} - {textStyle.bold}"{request.method.upper()} {request.url.path}{params} {protocol}" {response_color}{response.status_code} {res_text}{textStyle.reset}'
+            )
         return response
 
 if config.frontend:
@@ -97,7 +131,7 @@ for file in os.listdir("./src"):
                 module.graphene_on_load()
             app.include_router(module.router)
     elif os.path.isdir(os.path.join("./src", file)):
-        if file != "lib" or file != "__pycache__" or file != "models":
+        if file != "lib" or file != "__pycache__" or file != "schema":
             for file_d in os.listdir(os.path.join("./src", file)):
                 if os.path.isfile(os.path.join("./src", file_d)):
                     if file_d.endswith(".py"):
