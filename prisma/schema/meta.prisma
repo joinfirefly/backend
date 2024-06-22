@@ -5,7 +5,9 @@ model Instance {
   iconUrl   String
   followingCount    Int @default(0) // isHereがTrueなら使わない。
   folllowersCount   Int @default(0) // isHereがTrueなら使わない。
+  name          String?
   description   String?
 
   user  User[]
+  channels  Channel[]
 }

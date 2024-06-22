@@ -16,6 +16,9 @@ model Note {
 
     replyId        String?
     renoteId       String?
+    
+    channelId      String?
+    channel Channel? @relation(fields: [channelId], references: [id])
 }
 
 model Reactions {

@@ -1,8 +1,8 @@
 model Follow {
   followerId String
   followeeId String
-  follower   User     @relation("Follower", fields: [followerId], references: [username], onDelete: Cascade)
-  followee   User     @relation("Followee", fields: [followeeId], references: [username], onDelete: Cascade)
+  follower   User     @relation("follower", fields: [followerId], references: [username], onDelete: Cascade)
+  followee   User     @relation("followee", fields: [followeeId], references: [username], onDelete: Cascade)
   createdAt  DateTime @default(now())
 
   @@id([followerId, followeeId])
@@ -15,14 +15,17 @@ model User {
   username  String? @unique
   avatarUrl String?
   bannerUrl String?
+  password  String
 
-  followers Follow[] @relation("Follower")
-  followees Follow[] @relation("Followee")
+  followers Follow[] @relation("follower")
+  followees Follow[] @relation("followee")
+
+  channelFollowees  ChannelFollow[] @relation("channelFollowee")
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at") @updatedAt
 
-  posts Note[]
+  notes Note[]
   reactions Reactions[]
 
   host     String
