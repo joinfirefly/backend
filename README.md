@@ -8,6 +8,11 @@ Powered by [FastAPI](https://fastapi.tiangolo.com) with [Prisma](https://prisma.
 > Graphene-BE is under development. Therefore, its use in a production environment is deprecated.
 By following this guide, you can build an instance of Graphene.
 
+```shell
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 ## Inspired
 Most of Graphene's functionality (except for the back-end plugin system, etc.) is based on Misskey.
