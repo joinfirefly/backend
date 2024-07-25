@@ -35,6 +35,12 @@ serve = "uvicorn main:app"
 # "granian:serve" = "granian --interface asgi main:app"
 # grapctl
 
+[tool.pdm.dev-dependencies]
+pytest = [
+    "pytest>=8.3.1",
+    "pytest-cov>=5.0.0",
+]
+
 [project.urls]
 "Homepage" = "https://github.com/hol0-dev/backend"
 "Bug Tracker" = "https://github.com/hol0-dev/backend/issues"
