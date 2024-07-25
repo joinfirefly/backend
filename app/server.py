@@ -21,6 +21,21 @@ handler = logging.FileHandler('./.logs/{:%Y-%m-%d}.log'.format(log.logConfig.tim
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+def generate_schema():
+    Hol0_figlet = pyfiglet.figlet_format("Holo", font="chunky")
+    logger.info("\n" + Hol0_figlet)
+    logger.info(f"v{__version__}, Created By Holo Team")
+    logger.info("Generating OpenAPI JSON...")
+    openapi = get_openapi(
+        title=app.title,
+        version=app.version,
+        openapi_version=app.openapi_version,
+        description=app.description,
+        routes=app.routes,
+    )
+    logger.info("OpenAPI JSON data was successfully generated.")
+    return openapi
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     env = os.environ
