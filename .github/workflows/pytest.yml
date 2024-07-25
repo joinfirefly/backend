@@ -27,6 +27,11 @@ jobs:
         pip install pytest pytest-cov
         pip install -r requirements.txt
 
+    - name: Generate Prisma Models from Schema
+      run: |
+        python app/utils/combine.py
+        prisma generate
+
     - name: Run tests with coverage
       run: |
         pytest --cov=./ --cov-report=xml
@@ -53,6 +58,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest pytest-cov
         pip install -r requirements.txt
+
+    - name: Generate Prisma Models from Schema
+      run: |
+        python app/utils/combine.py
+        prisma generate
 
     - name: Run tests with coverage
       run: |
