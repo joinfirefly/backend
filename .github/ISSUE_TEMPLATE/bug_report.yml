@@ -14,8 +14,8 @@ body:
   - type: textarea
     attributes:
       label: To Reproduce
-      description: |
-        Steps to reproduce the behavior:
+      description: Steps to reproduce the behavior.
+      placeholder: |
         1. Go to '...'
         2. Click on '....'
         3. Scroll down to '....'
@@ -34,6 +34,13 @@ body:
     attributes:
       label: "Backend Infomation (for Server Admins):"
       description: |
+        example:
+          - Python: 3.12 
+          - PostgreSQL: 16
+          - Redis: 7
+          - OS: Ubuntu 22.04
+          - Architecture: x64
+      placeholder: |
         * Python: 
         * PostgreSQL: 
         * Redis: 
@@ -46,6 +53,13 @@ body:
     attributes:
       label: Client Infomation
       description: |
+        example:
+          - OS: Windows10 22H2
+          - Device: Dell XPS8940
+          - Browser: Google Chrome 126.0.6478.185
+          - Server URL: https://example.com
+          - Backend Version: 0.1.0
+      placeholder: |
         * OS: 
         * Device: 
         * Browser: 
