@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussion Forum
+    url: https://github.com/orgs/hol0-dev/discussions
+    about: Start a discussion
+  - name: Report Vulnerabilities
+    url: 
+    about: Please report vulnerabilities here, not through an issue.
