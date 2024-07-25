@@ -40,12 +40,12 @@ body:
           - Redis: 7
           - OS: Ubuntu 22.04
           - Architecture: x64
-      placeholder: |
-        * Python: 
-        * PostgreSQL: 
-        * Redis: 
-        * OS: 
-        * Architecture: 
+      value: |
+        - Python: 
+        - PostgreSQL: 
+        - Redis: 
+        - OS: 
+        - Architecture: 
     validations:
       required: false
 
@@ -59,12 +59,12 @@ body:
           - Browser: Google Chrome 126.0.6478.185
           - Server URL: https://example.com
           - Backend Version: 0.1.0
-      placeholder: |
-        * OS: 
-        * Device: 
-        * Browser: 
-        * Server URL: 
-        * Backend Version: 
+      value: |
+        - OS: 
+        - Device: 
+        - Browser: 
+        - Server URL: 
+        - Backend Version: 
     validations:
       required: false
 
