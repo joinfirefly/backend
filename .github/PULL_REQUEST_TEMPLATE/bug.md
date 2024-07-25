@@ -6,3 +6,5 @@ Please post your changes here
 <!--
 If you have any related issues please post them here.
 -->
+## 
+- [ ] I agree to [Code of Conduct](CODE_OF_CONDUCT.md)
