@@ -7,7 +7,6 @@ body:
   - type: textarea
     attributes:
       label: "summary"
-      description: ""
     validations:
       required: true
 
