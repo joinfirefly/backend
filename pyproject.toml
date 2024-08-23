@@ -6,40 +6,34 @@ authors = [
     {name = "AmaseCocoa", email = "amase.cocoa@gmail.com"},
 ]
 dependencies = [
-    "fastapi>=0.111.0",
     "aiohttp[speedups]>=3.9.5",
     "aiofiles>=23.2.1",
-    "orjson>=3.10.3",
     "pycryptodome>=3.20.0",
     #    "granian>=1.4.1",
     "boringavatars>=1.0.3",
     "bcrypt>=4.2.0",
     "joserfc>=1.0.0",
-    "uvicorn[standard]>=0.30.0",
     "pyfiglet>=1.0.2",
     "redis[hiredis]>=5.0.4",
-    "passlib[bcrypt]>=1.7.4",
     "prisma>=0.13.1",
     "activitypub-utils>=0.3.1.post1",
     "python-aid>=0.2.1",
     "omegaconf>=2.3.0",
-    "scalar-fastapi>=1.0.2",
     "colorlog>=6.8.2",
+    "robyn>=0.58.2",
 ]
 requires-python = ">=3.11"
 readme = "README.md"
-license = {text = "AGPL-3.0-or-later"}
+license = {text = "AGPL-3.0-only"}
 
 
 [tool.pdm]
 distribution = false
 
 [tool.pdm.scripts]
-serve = "uvicorn main:app"
+serve = "python src/process.py --workers=5 --process=5"
 test = "pytest --cov=./ --cov-report=xml"
 migrate = "python app/utils/migrate.py"
-# "granian:serve" = "granian --interface asgi main:app"
-# grapctl
 
 [tool.pdm.dev-dependencies]
 pytest = [

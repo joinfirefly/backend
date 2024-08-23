@@ -1,7 +1,7 @@
-from fastapi import APIRouter
+from robyn import SubRouter
 
 from . import activitypub, avatar
 
-router = APIRouter()
+router = SubRouter("Holo")
 router.include_router(activitypub.router)
 router.include_router(avatar.router)
