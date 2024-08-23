@@ -1,9 +1,11 @@
 from boringavatars import avatar
-from fastapi import APIRouter, Response
-from fastapi.responses import RedirectResponse
+from robyn import SubRouter, Response
 from prisma.models import User
 
-router = APIRouter()
+from ..utils.responses import Redirect
+
+router = SubRouter("Holo")
+
 
 @router.get("/{username}.png")
 async def get_avatar(username: str):
@@ -11,7 +13,7 @@ async def get_avatar(username: str):
     if user is None:
         return Response(status_code=404)
     else:
-        return RedirectResponse(user.avatarUrl)
+        return Redirect(user.avatarUrl)
 
 @router.get("/identicon/{text}/")
 async def identicon(text: str):

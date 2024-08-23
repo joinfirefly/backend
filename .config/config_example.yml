@@ -16,3 +16,7 @@ debug:
   enable: true
   profiling: false
   nossl: false
+
+extends:
+  workers: 4
+  process: 4

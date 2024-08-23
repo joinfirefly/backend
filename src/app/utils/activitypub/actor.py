@@ -4,6 +4,7 @@ import aiohttp
 from aiohttp.client_exceptions import ClientConnectorError
 from prisma.models import User
 from python_aid import aidx
+from yarl import URL
 
 from ... import __version__
 from ..exceptions import HostNotFoundError, WebFingerNotSupported, ActorNotFound, RemoteActorException
@@ -25,6 +26,7 @@ async def get_remote_user_from_url(url: str):
             "actorUrl": url
         }
     )
+    remote = URL(url)
     if actor is None:
         async with aiohttp.ClientSession() as session:
             raw_actor = fetch_remote_actor_from_url(url, session)
@@ -46,16 +48,24 @@ async def get_remote_user_from_url(url: str):
                 description = raw_actor.get("summary")
             else:
                 description = ""
-            actor = await User.prisma().create(data={
-                "id": aidx.genAidx(),
-                "username": raw_actor["preferredUsername"],
-                "normalizedUserName": raw_actor["preferredUsername"].lower(),
-                "avatarUrl": avatarUrl,
-                "bannerUrl": bannerUrl,
-                "description": description,
-                "publicKeyOwner": raw_actor["publicKey"]["owner"],
-                "publicKeyPem": raw_actor["publicKey"]["publicKeyPem"]
-            })
+            actor = await User.prisma().create(
+                data={
+                    "id": aidx.genAidx(),
+                    "host": remote.host,
+                    "username": raw_actor["preferredUsername"],
+                    "normalizedUserName": raw_actor["preferredUsername"].lower(),
+                    "avatarUrl": avatarUrl,
+                    "bannerUrl": bannerUrl,
+                    "description": description,
+                    "manuallyApprovesFollowers": raw_actor.get("manuallyApprovesFollowers", False),
+                    "discoverable": raw_actor.get("discoverable", False),
+                    "publicKeyOwner": raw_actor["publicKey"]["owner"],
+                    "publicKeyPem": raw_actor["publicKey"]["publicKeyPem"],
+                    "bday": raw_actor.get("vcard:bday"),
+                    "address": raw_actor.get("vcard:Address")
+                }
+            )
+    return actor
 
 async def fetch_remote_actor_from_url(url: str, session: aiohttp.ClientSession):
     async with session.get(url, headers={"User-Agent": f"Hol0/{__version__} ()", "Accept": "application/activity+json"}) as resp:
@@ -87,3 +97,5 @@ async def fetch_remote_actor(host: str, handle: str, acct_host: str=None):
                     return actor
     except ClientConnectorError:
         raise HostNotFoundError(f"Host: {host} is unavailable")
+    
+asyncio.run(get_remote_user_from_url("https://misskey.io/users/9sx9majyf5k302i8"))
