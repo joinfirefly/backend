@@ -1,0 +1,53 @@
+model Reactions {
+    id     String @id @default(cuid())
+
+    noteId String
+    userId String
+
+    note   Note   @relation(fields: [noteId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model File {
+    id          String   @id
+    hash        String   @unique
+
+    url         String
+
+    isSensitive Boolean
+
+    fileSize    Int?
+    fileType    String
+
+    caption     String?
+
+    createdAt   DateTime @default(now()) @map("created_at")
+    attachedNotes       Note[]   @relation("AttachmentsToNote")
+}
+
+model Note {
+    id             String        @id
+
+    content        String?
+    content_html   String?
+
+    username       String
+
+    createdAt      DateTime      @default(now()) @map("created_at")
+    updatedAt      DateTime      @default(now()) @map("updated_at")
+
+    visibility     String
+    visibleUserIds String[]
+
+    replyId        String?
+    renoteId       String?
+
+    channelId      String?
+    channel        Channel?      @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+    authorId       String
+    author         User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+    reactions      Reactions[]
+    attachments    File[] @relation("AttachmentsToNote")
+}

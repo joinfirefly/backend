@@ -1,11 +1,12 @@
 import logging
 
 from prisma.models import User
-from robyn import SubRouter, Response, jsonify, Request
-
+from fastapi import APIRouter
+from fastapi.requests import Request
+from fastapi.responses import ORJSONResponse, Response
 from prisma.models import BEConfig
 
-router = SubRouter("Holo")
+router = APIRouter(include_in_schema=False)
 logger: logging.Logger = None
 
 
@@ -82,7 +83,7 @@ async def users(request: Request, userid: str):
             "sensitive": False,
             "name": None,
         }
-    return Response(jsonify(actor), headers={"Content-Type": "application/activity+json"})
+    return ORJSONResponse(actor, media_type="application/activity+json")
 
 
 """
