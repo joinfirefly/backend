@@ -4,15 +4,17 @@ import json
 
 import aiohttp
 import aputils
-from robyn import SubRouter, Request
-
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import ORJSONResponse, Response
 from prisma.models import User
 from Crypto.PublicKey import RSA
 
 from ...utils import log
 from ... import __version__
 
-router = SubRouter("Holo")
+router = APIRouter(
+    include_in_schema=False
+)
 logger, formatter = log.getLogger(__name__)
 handler = logging.FileHandler('./.logs/{:%Y-%m-%d}.log'.format(log.logConfig.time))
 handler.setFormatter(formatter)

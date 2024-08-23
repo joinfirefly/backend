@@ -1,12 +1,13 @@
 import logging
 
-from robyn import SubRouter, Request, jsonify
+from fastapi import APIRouter, Request
+from fastapi.responses import ORJSONResponse, Response
 
 from prisma.models import BEConfig, User, Note
 
 from ... import __version__
 
-router = SubRouter("Holo", prefix="/nodeinfo")
+router = APIRouter(prefix="/nodeinfo", include_in_schema=False)
 
 logger: logging.Logger = None
 
@@ -70,7 +71,7 @@ async def v2_1(request: Request):
             ni["maintainer"] = {
                 "name": instance.maintainerName
             }
-    return ni
+    return ORJSONResponse(ni)
 
 
 @router.get("/2.0")
@@ -127,4 +128,4 @@ async def v2(request: Request):
             ni["maintainer"] = {
                 "name": instance.maintainerName
             }
-    return ni
+    return ORJSONResponse(ni)

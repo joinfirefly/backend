@@ -1,11 +1,11 @@
-# Holo
-Holo backend server.
+# HoloBE
+Holo (Hol0) backend server.
 
-Powered by [Robyn](https://fastapi.tiangolo.com) with [Prisma](https://prisma.io) ([prisma-client-py](https://github.com/RobertCraigie/prisma-client-py))
+Powered by [FastAPI](https://fastapi.tiangolo.com) with [Prisma](https://prisma.io) ([prisma-client-py](https://github.com/RobertCraigie/prisma-client-py))
 
 ## Getting Started
 > [!WARNING]
-> Holo is under development. Therefore, its use in a production environment is deprecated.
+> HoloBE is under development. Therefore, its use in a production environment is deprecated.
 By following this guide, you can build an instance of Hol0.
 
 ```shell
@@ -26,7 +26,7 @@ Hol0 is inspired by the following software:
   - [ ] ActivityPub (1/8 done)
     - [x] webfinger
     - [ ] Person
-<!--    - [ ] Instance Actor-->
+    - [ ] Instance Actor
     - [ ] Inbox
     - [ ] Outbox
     - [ ] Post Activity To Remote
@@ -45,11 +45,11 @@ Hol0 is inspired by the following software:
   - [ ] Misskey's summaly proxy support
   - [ ] Allow registration to be approved/or invite code-based (from Misskey (and Sharkey))
 - [ ] Frontend
-  - [ ] login
-  - [ ] signup
-    - [ ] CloudFlare Turnstile
+  - [x] login
+  - [x] signup
+    - [x] CloudFlare Turnstile
   - [ ] password reset
-    - [ ] CloudFlare Turnstile
+    - [x] CloudFlare Turnstile
   - [ ] Profile
   - [ ] Note
     - [ ] Render MFM
